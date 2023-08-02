@@ -1,0 +1,5 @@
+local cmd = ba.cmd.Create('Menu')
+cmd:RunOnClient(function(args)
+	ba.ui.OpenMenu()
+end)
+cmd:SetHelp('Открыть меню с командами')

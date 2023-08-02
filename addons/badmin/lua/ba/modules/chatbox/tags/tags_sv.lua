@@ -1,0 +1,11 @@
+util.AddNetworkString("ba::chat.SetTag")
+util.AddNetworkString("ba::chat.ClearTag")
+
+net.Receive("ba::chat.SetTag", function(_,ply)
+	ply:SetNetVar("ChatTag",net.ReadString())
+	ba.notify(ply, term.Get('ChatTagUpdated'))
+end)
+net.Receive("ba::chat.ClearTag", function(_,ply)
+	ply:SetNetVar("ChatTag",'')
+	ba.notify(ply, term.Get('ChatTagCleared'))
+end)
