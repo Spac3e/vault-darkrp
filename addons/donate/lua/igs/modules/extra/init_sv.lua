@@ -53,6 +53,7 @@ end)
 
 concommand.Add("igs_reload", function(pl, _, args)
 	if pl == NULL then -- console only
+		print(args[1]  and "Super Reload" or "Casual Reload")
 		IGS.sh(args[1] and "autorun/l_ingameshop.lua" or "igs/launcher.lua")
 	end
 end)
@@ -104,7 +105,7 @@ hook.Add("IGS.PlayerPurchasesLoaded", "BalanceRemember", function(pl)
 		timer.Simple(10, function()
 			if not IsValid(pl) then return end
 			IGS.Notify(pl, "Вы можете потратить " .. IGS.SignPrice(balance) .. " через /donate")
-			IGS.Notify(pl, "Ваш Score " .. (pl.igs_score or 0)) -- or 0 на всякий случай
+			IGS.Notify(pl, "Ваш Score " .. (pl.igs_score or 0) .. ". Подробнее: vk.cc/caHTZi") -- or 0 на всякий случай
 		end)
 	end
 end)
@@ -116,6 +117,7 @@ end)
 	Поиск новых версий
 ---------------------------------------------------------------------------]]
 timer.Simple(1, function() -- http.Fetch
+	print("IGS Поиск обновлений")
 	if not IGS_REPO then return end
 	http.Fetch("https://api.github.com/repos/" .. IGS_REPO .. "/releases", function(json)
 		local releases = util.JSONToTable(json)
@@ -129,6 +131,13 @@ timer.Simple(1, function() -- http.Fetch
 		local freshest_version = math.floor(releases[1].tag_name)
 		local current_version  = math.floor(current_tag)
 
+		if freshest_version > current_version then
+			local info_url = "https://github.com/" .. IGS_REPO .. "/releases/tag/" .. math.floor(freshest_version)
+			print("IGS Доступна новая версия: " .. freshest_version .. ". Установлена: " .. current_version .. "\nИнформация здесь: " .. info_url)
+		else
+			print("IGS Major обновлений нет")
+		end
+
 		local freshest_suitable
 		for _,release in ipairs(releases) do -- от свежайших
 			if current_tag == release.tag_name then break end -- 123.1 current and 123.1 suitable
@@ -139,12 +148,15 @@ timer.Simple(1, function() -- http.Fetch
 		end
 
 		if freshest_suitable then
+			print("IGS Найдено новое soft обновление. Текущая версия, новая:", current_tag, freshest_suitable)
 			local url = "https://github.com/" .. IGS_REPO .. "/releases/download/" .. freshest_suitable .. "/superfile.json"
 			http.Fetch(url, function(superfile)
+				print("IGS Обновление загружено. Перезагрузите сервер для применения")
 				file.Write("igs/superfile.txt", superfile)
 				cookie.Set("igs_version", freshest_suitable)
 			end, error)
 		else
+			print("IGS  Soft обновлений нет")
 		end
 	end, error)
 end)

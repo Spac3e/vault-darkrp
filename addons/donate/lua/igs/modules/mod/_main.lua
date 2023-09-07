@@ -1058,7 +1058,7 @@ end
 function PANEL:Init()
 	self.Purchase = NM.CreateUI("DButton", function(s)
 		s:SetText("")
-		s.Text = "Пополнить баланс на ? руб"
+		s.Text = "Пополнить баланс на ? грн"
 		s:SetDisabled(true)
 		s:SetSize(pX(277), pX(43))
 		s:SetPos(pX(29), pX(236))

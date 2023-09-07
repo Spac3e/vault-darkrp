@@ -229,7 +229,6 @@ if SERVER then
 	-- Активация
 	-- Возвращает boolErr и errMsg
 	function STORE_ITEM:CanActivate(pl, iInvId)
-		if !IsValid(pl) and !pl:IsPlayer() then return end
 		if (not self:IsStackable() and pl:HasPurchase( self:UID() )) then
 			return false,"Услуга уже активна"
 		end

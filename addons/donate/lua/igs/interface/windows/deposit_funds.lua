@@ -43,7 +43,7 @@ function IGS.WIN.Deposit(iRealSum)
 		self.real_m:SetNumeric(true)
 		self.real_m.Think = function(s)
 			local sum = tonumber(s:GetValue())
-			self.purchase:SetText("Пополнить счет на " .. niceSum(sum, 0) .. " руб")
+			self.purchase:SetText("Пополнить счет на " .. niceSum(sum, 0) .. " грн")
 		--	self.purchase:SetActive(sum and sum > 0)
 			if sum and sum > 0 then
 				self.purchase:SetDisabled(false)
